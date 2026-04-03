@@ -2,6 +2,7 @@ import axios from "axios";
 import type { Note } from "../types/note";
 const myKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN
 const BASE_URL = "https://notehub-public.goit.study/api/notes";
+import type { CategoriNote } from "../types/note";
 
     interface FetchNotesProps {
         notes: Note[];
@@ -57,4 +58,38 @@ export async function fetchNoteById(id : string) : Promise<Note> {
         Authorization: `Bearer ${myKey}`},
       },);
   return data;
+}
+
+export async function fetchCotegories({
+  tag,
+}: {
+  tag?: string;
+}): Promise<Note[]> {
+  const params: Record<string, string> = {};
+
+  if (tag) {
+    params.tag = tag;
+  }
+
+  const response = await axios.get(
+    "http://localhost:3000/notes",
+    { params }
+  );
+
+  console.log("DATA:", response.data);
+
+  // 👇 підлаштовуємось під бекенд
+  if (Array.isArray(response.data)) {
+    return response.data;
+  }
+
+  if (Array.isArray(response.data.notes)) {
+    return response.data.notes;
+  }
+
+  if (Array.isArray(response.data.data)) {
+    return response.data.data;
+  }
+
+  return [];
 }
