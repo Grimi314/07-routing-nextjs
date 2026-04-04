@@ -1,20 +1,22 @@
-import NotesModal from "@/components/NotesModal/NotesModal";
+"use client";
+import css from "./NotesModal.module.css";
+import { useRouter } from "next/router";
+interface NotesModalProps {
+  children: React.ReactNode;
+}
 
-import { fetchNoteById } from "@/lib/api";
-
-type Props = {
-  params: {
-    id: string;
-  };
-};
-
-export default async function NotePreview({ params }: Props) {
-  const note = await fetchNoteById(params.id);
+export default function NotesModal({ children }: NotesModalProps) {
+  const router = useRouter();
+  function closeModal() {
+    router.back();
+  }
 
   return (
-    <NotesModal>
-      <h2>{note.title}</h2>
-      <p>{note.content}</p>
-    </NotesModal>
+    <div className={css.backdrop}>
+      <div className={css.modal}>
+        <button type="button" onClick={closeModal}></button>
+        {children}
+      </div>
+    </div>
   );
 }

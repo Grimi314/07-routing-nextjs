@@ -60,11 +60,10 @@ export async function fetchNoteById(id : string) : Promise<Note> {
   return data;
 }
 
-export async function fetchCotegories({
-  tag,
-}: {
-  tag?: string;
-}): Promise<Note[]> {
+export async function fetchCotegories(
+
+  tag?: string
+): Promise<Note[]> {
   const params: Record<string, string> = {};
 
   if (tag) {
@@ -78,7 +77,7 @@ export async function fetchCotegories({
 
   console.log("DATA:", response.data);
 
-  // 👇 підлаштовуємось під бекенд
+ 
   if (Array.isArray(response.data)) {
     return response.data;
   }
