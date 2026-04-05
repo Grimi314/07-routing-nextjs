@@ -2,7 +2,7 @@ import axios from "axios";
 import type { Note } from "../types/note";
 const myKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN
 const BASE_URL = "https://notehub-public.goit.study/api/notes";
-import type { CategoriNote } from "../types/note";
+
 
     interface FetchNotesProps {
         notes: Note[];
@@ -10,12 +10,13 @@ import type { CategoriNote } from "../types/note";
         totalPages: number;
     }
 
-export async function fetchNotes(searchText: string, page: number , perPage?: number): Promise<FetchNotesProps>{
+export async function fetchNotes(searchText?: string, page?: number , perPage?: number , tag? : string ): Promise<FetchNotesProps>{
     const response = await axios.get<FetchNotesProps>(BASE_URL, {
         params: {
             search: searchText,
             page,
-            perPage,
+        perPage,
+            tag
         },
         headers: {
             Authorization: `Bearer ${myKey}`,
@@ -60,35 +61,3 @@ export async function fetchNoteById(id : string) : Promise<Note> {
   return data;
 }
 
-export async function fetchCotegories(
-
-  tag?: string
-): Promise<Note[]> {
-  const params: Record<string, string> = {};
-
-  if (tag) {
-    params.tag = tag;
-  }
-
-  const response = await axios.get(
-    "http://localhost:3000/notes",
-    { params }
-  );
-
-  console.log("DATA:", response.data);
-
- 
-  if (Array.isArray(response.data)) {
-    return response.data;
-  }
-
-  if (Array.isArray(response.data.notes)) {
-    return response.data.notes;
-  }
-
-  if (Array.isArray(response.data.data)) {
-    return response.data.data;
-  }
-
-  return [];
-}

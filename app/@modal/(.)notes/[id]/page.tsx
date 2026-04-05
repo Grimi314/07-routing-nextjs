@@ -1,20 +1,27 @@
 import NotesModal from "./NotePreview.client";
-
 import { fetchNoteById } from "@/lib/api";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import { Devonshire } from "next/font/google";
 
 type Props = {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 };
 
 export default async function NotePreview({ params }: Props) {
-  const note = await fetchNoteById(params.id);
+  const queryClient = new QueryClient();
+  const { id } = await params;
+  await queryClient.prefetchQuery({
+    queryKey: ["note", id],
+    queryFn: () => fetchNoteById(id),
+  });
 
   return (
-    <NotesModal>
-      <h2>{note.title}</h2>
-      <p>{note.content}</p>
-    </NotesModal>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <NotesModal />
+    </HydrationBoundary>
   );
 }

@@ -6,12 +6,15 @@ export default async function SidebarNotes() {
   return (
     <ul className={css.menuList}>
       <li>
-        <Link href={`/notes/filter/all`}>All notes</Link>
+        <Link href={`/notes/filter/all`} className={css.menuList}>
+          All notes
+        </Link>
       </li>
       {tags.map((tag) => (
         <li key={tag}>
-          <link href={`/notes/filter/${tag}`} className={css.menuLink} />
-          {tag}
+          <Link href={`/notes/filter/${tag}`} className={css.menuLink}>
+            {tag}
+          </Link>
         </li>
       ))}
     </ul>
