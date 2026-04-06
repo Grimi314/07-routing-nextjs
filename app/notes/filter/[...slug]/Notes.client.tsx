@@ -17,9 +17,8 @@ type Props = {
 };
 
 export default function NotesClient({ tag }: Props) {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
-  const [isopen, setIsOpen] = useState(false);
   const [perPage] = useState(12);
   const [isClicked, setIsClicked] = useState(false);
 
@@ -34,20 +33,16 @@ export default function NotesClient({ tag }: Props) {
     placeholderData: keepPreviousData,
   });
 
-  const notes: Note[] = data?.notes || [];
   const totalPages = data?.totalPages || 0;
-  const closeModal = () => setIsOpen(false);
+  const closeModal = () => setIsClicked(false);
 
-  const updateSearch = (value: string) => {
-    setQuery(value);
-  };
   function handleChangePage(newPage: number) {
     setPage(newPage);
   }
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
-        <SearchBox searchText={query} updateSearch={updateSearch} />
+        <SearchBox searchText={query} updateSearch={debouncedSearch} />
         {totalPages > 1 && (
           <Pagination
             pageCount={data?.totalPages ?? 0}

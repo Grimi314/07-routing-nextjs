@@ -6,7 +6,7 @@ export default async function SidebarNotes() {
   return (
     <ul className={css.menuList}>
       <li>
-        <Link href={`/notes/filter/all`} className={css.menuList}>
+        <Link href={`/notes/filter/all`} className={css.menuLink}>
           All notes
         </Link>
       </li>
